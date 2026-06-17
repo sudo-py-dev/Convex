@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Convex</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_history">History</string>
+    <string name="nav_advanced">Advanced</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Home -->
+    <string name="home_title">FFmpeg Tools</string>
+    <string name="home_search_hint">Search operations…</string>
+    <string name="home_recent_title">Recent Operations</string>
+    <string name="home_categories_title">Categories</string>
+
+    <!-- Categories -->
+    <string name="category_video">Video</string>
+    <string name="category_audio">Audio</string>
+    <string name="category_image">Image</string>
+    <string name="category_mux">Mux / Demux</string>
+    <string name="category_subtitles">Subtitles</string>
+
+    <!-- Video operations -->
+    <string name="op_video_convert">Convert Format</string>
+    <string name="op_video_convert_desc">Change container or codec</string>
+    <string name="op_video_resize">Change Resolution</string>
+    <string name="op_video_resize_desc">Scale video dimensions</string>
+    <string name="op_video_trim">Trim Video</string>
+    <string name="op_video_trim_desc">Cut start and end times</string>
+    <string name="op_video_compress">Compress Video</string>
+    <string name="op_video_compress_desc">Reduce file size with CRF</string>
+    <string name="op_video_watermark">Add Watermark</string>
+    <string name="op_video_watermark_desc">Overlay image on video</string>
+    <string name="op_video_extract_frames">Extract Frames</string>
+    <string name="op_video_extract_frames_desc">Save frames as images</string>
+    <string name="op_video_speed">Change Speed</string>
+    <string name="op_video_speed_desc">Speed up or slow down</string>
+    <string name="op_video_rotate">Rotate Video</string>
+    <string name="op_video_rotate_desc">Rotate by 90°, 180°, or 270°</string>
+
+    <!-- Audio operations -->
+    <string name="op_audio_convert">Convert Format</string>
+    <string name="op_audio_convert_desc">Change audio codec/container</string>
+    <string name="op_audio_extract">Extract from Video</string>
+    <string name="op_audio_extract_desc">Strip audio track from video</string>
+    <string name="op_audio_bitrate">Change Bitrate</string>
+    <string name="op_audio_bitrate_desc">Adjust audio quality</string>
+    <string name="op_audio_merge">Merge Tracks</string>
+    <string name="op_audio_merge_desc">Mix two audio streams</string>
+    <string name="op_audio_trim">Trim Audio</string>
+    <string name="op_audio_trim_desc">Cut start and end times</string>
+    <string name="op_audio_normalize">Normalize Volume</string>
+    <string name="op_audio_normalize_desc">Loudness normalization (EBU R128)</string>
+
+    <!-- Image operations -->
+    <string name="op_image_thumbnail">Extract Thumbnail</string>
+    <string name="op_image_thumbnail_desc">Save a frame as image</string>
+    <string name="op_image_slideshow">Slideshow from Images</string>
+    <string name="op_image_slideshow_desc">Create video from image sequence</string>
+    <string name="op_image_gif">Create GIF</string>
+    <string name="op_image_gif_desc">Convert video segment to GIF</string>
+
+    <!-- Mux/Demux operations -->
+    <string name="op_mux_remux">Remux Container</string>
+    <string name="op_mux_remux_desc">Change container without re-encoding</string>
+    <string name="op_mux_strip_audio">Strip Audio</string>
+    <string name="op_mux_strip_audio_desc">Remove audio stream</string>
+    <string name="op_mux_strip_video">Strip Video</string>
+    <string name="op_mux_strip_video_desc">Remove video stream</string>
+    <string name="op_mux_split">Split by Duration</string>
+    <string name="op_mux_split_desc">Split file into equal segments</string>
+    <string name="op_mux_concat">Concatenate Files</string>
+    <string name="op_mux_concat_desc">Join multiple files into one</string>
+
+    <!-- Subtitle operations -->
+    <string name="op_sub_burn">Burn Subtitles</string>
+    <string name="op_sub_burn_desc">Embed subtitles into video</string>
+    <string name="op_sub_extract">Extract Subtitles</string>
+    <string name="op_sub_extract_desc">Save subtitle stream to file</string>
+
+    <!-- Params / form labels -->
+    <string name="param_input_file">Input File</string>
+    <string name="param_output_file">Output File</string>
+    <string name="param_watermark_file">Watermark Image</string>
+    <string name="param_subtitle_file">Subtitle File</string>
+    <string name="param_second_input">Second Input</string>
+    <string name="param_format">Output Format</string>
+    <string name="param_codec">Codec</string>
+    <string name="param_resolution">Resolution</string>
+    <string name="param_start_time">Start Time (HH:MM:SS)</string>
+    <string name="param_end_time">End Time (HH:MM:SS)</string>
+    <string name="param_duration">Duration (HH:MM:SS)</string>
+    <string name="param_crf">CRF Quality (%1$d)</string>
+    <string name="param_bitrate">Bitrate (kbps)</string>
+    <string name="param_fps">Frame Rate (fps)</string>
+    <string name="param_speed">Speed Factor (%1$.1fx)</string>
+    <string name="param_rotation">Rotation</string>
+    <string name="param_segment_duration">Segment Duration (s)</string>
+    <string name="param_watermark_position">Watermark Position</string>
+    <string name="param_thumbnail_time">Timestamp (HH:MM:SS)</string>
+
+    <!-- Buttons -->
+    <string name="btn_start">Start</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_pick_file">Pick File</string>
+    <string name="btn_share">Share Output</string>
+    <string name="btn_open">Open</string>
+    <string name="btn_rerun">Re-run</string>
+    <string name="btn_clear_history">Clear History</string>
+    <string name="btn_run">Run</string>
+    <string name="btn_copy">Copy</string>
+    <string name="btn_paste">Paste</string>
+
+    <!-- Execution / Progress -->
+    <string name="progress_title">Processing…</string>
+    <string name="progress_running">Running FFmpeg</string>
+    <string name="progress_completed">Completed</string>
+    <string name="progress_failed">Failed</string>
+    <string name="progress_cancelled">Cancelled</string>
+    <string name="progress_speed">Speed: %1$s</string>
+    <string name="progress_time">Time: %1$s</string>
+    <string name="progress_size">Size: %1$s</string>
+    <string name="progress_log_title">Log</string>
+    <string name="progress_idle">Idle</string>
+
+    <!-- History -->
+    <string name="history_title">History</string>
+    <string name="history_empty">No executions yet</string>
+    <string name="history_clear_confirm">Clear all history?</string>
+    <string name="history_status_success">Success</string>
+    <string name="history_status_error">Error</string>
+    <string name="history_status_cancelled">Cancelled</string>
+
+    <!-- Advanced / CLI -->
+    <string name="advanced_title">Advanced</string>
+    <string name="advanced_tab_builder">Builder</string>
+    <string name="advanced_tab_cli">CLI</string>
+    <string name="advanced_cli_hint">Enter FFmpeg arguments (without the ffmpeg prefix)…</string>
+    <string name="advanced_preset">Preset Commands</string>
+    <string name="advanced_no_input">No arguments entered</string>
+    <string name="advanced_copy_command">Copy Full Command</string>
+    <string name="advanced_command_prefix">ffmpeg</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">System</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_iw">עברית</string>
+    <string name="settings_technical_mode">Technical Mode</string>
+    <string name="settings_technical_mode_desc">Show logs, speed, and CLI preview</string>
+    <string name="settings_about">About</string>
+    <string name="settings_version">Version</string>
+    <string name="settings_open_source">Open Source Licenses</string>
+
+    <!-- Media info -->
+    <string name="media_info_title">Media Info</string>
+    <string name="media_info_duration">Duration</string>
+    <string name="media_info_resolution">Resolution</string>
+    <string name="media_info_codec">Codec</string>
+    <string name="media_info_bitrate">Bitrate</string>
+    <string name="media_info_size">File Size</string>
+    <string name="media_info_fps">Frame Rate</string>
+
+    <!-- Errors -->
+    <string name="error_no_ffmpeg">FFmpeg is not available</string>
+    <string name="error_file_not_found">File not found</string>
+    <string name="error_invalid_params">Invalid parameters</string>
+    <string name="error_permission_denied">Storage permission denied</string>
+    <string name="error_generic">An error occurred: %1$s</string>
+
+    <!-- Misc -->
+    <string name="no_file_selected">No file selected</string>
+    <string name="file_selected">%1$s selected</string>
+    <string name="select_file">Select…</string>
+    <string name="watermark_position_top_left">Top Left</string>
+    <string name="watermark_position_top_right">Top Right</string>
+    <string name="watermark_position_bottom_left">Bottom Left</string>
+    <string name="watermark_position_bottom_right">Bottom Right</string>
+    <string name="watermark_position_center">Center</string>
+    <string name="rotation_90">90°</string>
+    <string name="rotation_180">180°</string>
+    <string name="rotation_270">270°</string>
+    <string name="rotation_flip_h">Flip Horizontal</string>
+    <string name="rotation_flip_v">Flip Vertical</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_done">Done</string>
+    <string name="btn_back_to_form">Back to Form</string>
+    <string name="category_not_found">Category not found</string>
+    <string name="settings_ffmpeg_kit">FFmpeg Kit</string>
+    <string name="settings_ffmpeg_kit_version">full-gpl 6.0</string>
+    <string name="progress_completed_output">Output: %1$s</string>
+    <string name="progress_failed_message">Code %1$d: %2$s</string>
+    <string name="desc_clear_custom_output">Clear custom output path</string>
+    <string name="desc_select_custom_output">Select custom output path</string>
+    <string name="category_operations_count">%1$d operations</string>
+    <string name="error_message_format">Error %1$d: %2$s</string>
+</resources>

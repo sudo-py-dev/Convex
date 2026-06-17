@@ -6,3 +6,8 @@ build
 
 # Ignore Kotlin plugin data
 .kotlin
+
+# Keystore & credentials
+*.keystore
+*.jks
+keystore.properties

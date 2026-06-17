@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Convex</string>
+
+    <!-- ניווט -->
+    <string name="nav_home">בית</string>
+    <string name="nav_history">היסטוריה</string>
+    <string name="nav_advanced">מתקדם</string>
+    <string name="nav_settings">הגדרות</string>
+
+    <!-- בית -->
+    <string name="home_title">כלי FFmpeg</string>
+    <string name="home_search_hint">חפש פעולות…</string>
+
+    <!-- קטגוריות -->
+    <string name="category_video">וידאו</string>
+    <string name="category_audio">שמע</string>
+    <string name="category_image">תמונה</string>
+    <string name="category_mux">Mux / Demux</string>
+    <string name="category_subtitles">כתוביות</string>
+
+    <!-- פעולות וידאו -->
+    <string name="op_video_convert">המרת פורמט</string>
+    <string name="op_video_convert_desc">שינוי קונטיינר או קודק</string>
+    <string name="op_video_resize">שינוי רזולוציה</string>
+    <string name="op_video_resize_desc">שינוי גודל הוידאו</string>
+    <string name="op_video_trim">חיתוך וידאו</string>
+    <string name="op_video_trim_desc">קביעת זמן התחלה וסיום</string>
+    <string name="op_video_compress">דחיסת וידאו</string>
+    <string name="op_video_compress_desc">הקטנת גודל הקובץ</string>
+    <string name="op_video_watermark">הוספת סימן מים</string>
+    <string name="op_video_watermark_desc">הוספת תמונה על הוידאו</string>
+    <string name="op_video_extract_frames">חילוץ פריימים</string>
+    <string name="op_video_extract_frames_desc">שמירת פריימים כתמונות</string>
+    <string name="op_video_speed">שינוי מהירות</string>
+    <string name="op_video_speed_desc">האצה או האטה של הוידאו</string>
+    <string name="op_video_rotate">סיבוב וידאו</string>
+    <string name="op_video_rotate_desc">סיבוב ב-90°, 180°, או 270°</string>
+
+    <!-- פעולות שמע -->
+    <string name="op_audio_convert">המרת פורמט</string>
+    <string name="op_audio_convert_desc">שינוי קודק/קונטיינר שמע</string>
+    <string name="op_audio_extract">חילוץ משמע מוידאו</string>
+    <string name="op_audio_extract_desc">שמירת פס הקול מהוידאו</string>
+    <string name="op_audio_bitrate">שינוי קצב סיביות</string>
+    <string name="op_audio_bitrate_desc">שינוי איכות השמע</string>
+    <string name="op_audio_merge">מיזוג פסי קול</string>
+    <string name="op_audio_merge_desc">ערבוב שני פסי קול</string>
+    <string name="op_audio_trim">חיתוך שמע</string>
+    <string name="op_audio_trim_desc">קביעת זמן התחלה וסיום</string>
+    <string name="op_audio_normalize">נרמול עוצמת קול</string>
+    <string name="op_audio_normalize_desc">נרמול עוצמה (EBU R128)</string>
+
+    <!-- פעולות תמונה -->
+    <string name="op_image_thumbnail">חילוץ תמונה ממוזערת</string>
+    <string name="op_image_thumbnail_desc">שמירת פריים כתמונה</string>
+    <string name="op_image_slideshow">מצגת מתמונות</string>
+    <string name="op_image_slideshow_desc">יצירת וידאו מרצף תמונות</string>
+    <string name="op_image_gif">יצירת GIF</string>
+    <string name="op_image_gif_desc">המרת קטע וידאו ל-GIF</string>
+
+    <!-- פעולות Mux/Demux -->
+    <string name="op_mux_remux">שינוי קונטיינר</string>
+    <string name="op_mux_remux_desc">שינוי קונטיינר ללא קידוד מחדש</string>
+    <string name="op_mux_strip_audio">הסרת שמע</string>
+    <string name="op_mux_strip_audio_desc">הסרת פס הקול</string>
+    <string name="op_mux_strip_video">הסרת וידאו</string>
+    <string name="op_mux_strip_video_desc">הסרת פס הוידאו</string>
+    <string name="op_mux_split">פיצול לפי משך זמן</string>
+    <string name="op_mux_split_desc">פיצול הקובץ לקטעים שווים</string>
+    <string name="op_mux_concat">איחוד קבצים</string>
+    <string name="op_mux_concat_desc">חיבור מספר קבצים לאחד</string>
+
+    <!-- פעולות כתוביות -->
+    <string name="op_sub_burn">צריבת כתוביות</string>
+    <string name="op_sub_burn_desc">הטמעת כתוביות בוידאו</string>
+    <string name="op_sub_extract">חילוץ כתוביות</string>
+    <string name="op_sub_extract_desc">שמירת כתוביות לקובץ</string>
+
+    <!-- פרמטרים / טופס -->
+    <string name="param_input_file">קובץ קלט</string>
+    <string name="param_output_file">קובץ פלט</string>
+    <string name="param_watermark_file">תמונת סימן מים</string>
+    <string name="param_subtitle_file">קובץ כתוביות</string>
+    <string name="param_second_input">קלט שני</string>
+    <string name="param_format">פורמט פלט</string>
+    <string name="param_codec">קודק</string>
+    <string name="param_resolution">רזולוציה</string>
+    <string name="param_start_time">זמן התחלה (HH:MM:SS)</string>
+    <string name="param_end_time">זמן סיום (HH:MM:SS)</string>
+    <string name="param_duration">משך זמן (HH:MM:SS)</string>
+    <string name="param_crf">איכות CRF (%1$d)</string>
+    <string name="param_bitrate">קצב סיביות (kbps)</string>
+    <string name="param_fps">קצב פריימים (fps)</string>
+    <string name="param_speed">מקדם מהירות (%1$.1fx)</string>
+    <string name="param_rotation">סיבוב</string>
+    <string name="param_segment_duration">משך קטע (שניות)</string>
+    <string name="param_watermark_position">מיקום סימן המים</string>
+    <string name="param_thumbnail_time">חותמת זמן (HH:MM:SS)</string>
+
+    <!-- כפתורים -->
+    <string name="btn_start">התחל</string>
+    <string name="btn_cancel">ביטול</string>
+    <string name="btn_pick_file">בחר קובץ</string>
+    <string name="btn_share">שתף פלט</string>
+    <string name="btn_open">פתח</string>
+    <string name="btn_rerun">הפעל שוב</string>
+    <string name="btn_clear_history">נקה היסטוריה</string>
+    <string name="btn_run">הפעל</string>
+    <string name="btn_copy">העתק</string>
+    <string name="btn_paste">הדבק</string>
+
+    <!-- ביצוע / התקדמות -->
+    <string name="progress_title">מעבד…</string>
+    <string name="progress_running">מריץ FFmpeg</string>
+    <string name="progress_completed">הושלם</string>
+    <string name="progress_failed">נכשל</string>
+    <string name="progress_cancelled">בוטל</string>
+    <string name="progress_speed">מהירות: %1$s</string>
+    <string name="progress_time">זמן: %1$s</string>
+    <string name="progress_size">גודל: %1$s</string>
+    <string name="progress_log_title">יומן</string>
+    <string name="progress_idle">ממתין</string>
+
+    <!-- היסטוריה -->
+    <string name="history_title">היסטוריה</string>
+    <string name="history_empty">אין פעולות עדיין</string>
+    <string name="history_clear_confirm">לנקות את כל ההיסטוריה?</string>
+    <string name="history_status_success">הצליח</string>
+    <string name="history_status_error">שגיאה</string>
+    <string name="history_status_cancelled">בוטל</string>
+
+    <!-- מתקדם / CLI -->
+    <string name="advanced_title">מתקדם</string>
+    <string name="advanced_tab_builder">בונה</string>
+    <string name="advanced_tab_cli">CLI</string>
+    <string name="advanced_cli_hint">הכנס ארגומנטים של FFmpeg (ללא הקידומת ffmpeg)…</string>
+    <string name="advanced_preset">פקודות מוכנות מראש</string>
+    <string name="advanced_no_input">לא הוזנו ארגומנטים</string>
+    <string name="advanced_copy_command">העתק פקודה מלאה</string>
+    <string name="advanced_command_prefix">ffmpeg</string>
+
+    <!-- הגדרות -->
+    <string name="settings_title">הגדרות</string>
+    <string name="settings_theme">ערכת נושא</string>
+    <string name="settings_theme_system">מערכת</string>
+    <string name="settings_theme_light">בהיר</string>
+    <string name="settings_theme_dark">כהה</string>
+    <string name="settings_language">שפה</string>
+    <string name="settings_language_system">מערכת</string>
+    <string name="settings_language_en">English</string>
+    <string name="settings_language_iw">עברית</string>
+    <string name="settings_technical_mode">מצב טכני</string>
+    <string name="settings_technical_mode_desc">הצגת יומני רישום, מהירות ותצוגה מקדימה של פקודות</string>
+    <string name="settings_about">אודות</string>
+    <string name="settings_version">גרסה</string>
+    <string name="settings_open_source">רישיונות קוד פתוח</string>
+
+    <!-- מידע מדיה -->
+    <string name="media_info_title">מידע מדיה</string>
+    <string name="media_info_duration">משך</string>
+    <string name="media_info_resolution">רזולוציה</string>
+    <string name="media_info_codec">קודק</string>
+    <string name="media_info_bitrate">קצב סיביות</string>
+    <string name="media_info_size">גודל קובץ</string>
+    <string name="media_info_fps">קצב פריימים</string>
+
+    <!-- שגיאות -->
+    <string name="error_no_ffmpeg">FFmpeg אינו זמין</string>
+    <string name="error_file_not_found">הקובץ לא נמצא</string>
+    <string name="error_invalid_params">פרמטרים לא תקינים</string>
+    <string name="error_permission_denied">גישה לאחסון נדחתה</string>
+    <string name="error_generic">אירעה שגיאה: %1$s</string>
+
+    <!-- כללי -->
+    <string name="no_file_selected">לא נבחר קובץ</string>
+    <string name="file_selected">%1$s נבחר</string>
+    <string name="select_file">בחר…</string>
+    <string name="watermark_position_top_left">שמאל עליון</string>
+    <string name="watermark_position_top_right">ימין עליון</string>
+    <string name="watermark_position_bottom_left">שמאל תחתון</string>
+    <string name="watermark_position_bottom_right">ימין תחתון</string>
+    <string name="watermark_position_center">מרכז</string>
+    <string name="rotation_90">90°</string>
+    <string name="rotation_180">180°</string>
+    <string name="rotation_270">270°</string>
+    <string name="rotation_flip_h">היפוך אופקי</string>
+    <string name="rotation_flip_v">היפוך אנכי</string>
+    <string name="btn_ok">אישור</string>
+    <string name="btn_done">בוצע</string>
+    <string name="btn_back_to_form">חזרה לטופס</string>
+    <string name="category_not_found">הקטגוריה לא נמצאה</string>
+    <string name="settings_ffmpeg_kit">ערכת FFmpeg</string>
+    <string name="settings_ffmpeg_kit_version">full-gpl 6.0</string>
+    <string name="progress_completed_output">פלט: %1$s</string>
+    <string name="progress_failed_message">קוד %1$d: %2$s</string>
+    <string name="desc_clear_custom_output">נקה פלט מותאם אישית</string>
+    <string name="desc_select_custom_output">בחר פלט מותאם אישית</string>
+    <string name="category_operations_count">%1$d פעולות</string>
+    <string name="error_message_format">שגיאה %1$d: %2$s</string>
+</resources>
