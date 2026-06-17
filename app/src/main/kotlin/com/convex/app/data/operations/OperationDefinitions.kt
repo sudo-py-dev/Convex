@@ -387,11 +387,24 @@ object OperationDefinitions {
                         commandBuilder = { v ->
                             val speed = v["speed"]?.toFloatOrNull() ?: 2f
                             val pts = 1f / speed
-                            val audioSpeed = speed.coerceIn(0.5f, 2f)
+                            
+                            // atempo filter only supports 0.5 to 2.0. Chain them for higher/lower speeds.
+                            var audioFilter = ""
+                            var remainingSpeed = speed
+                            while (remainingSpeed > 2.0) {
+                                audioFilter += "atempo=2.0,"
+                                remainingSpeed /= 2.0f
+                            }
+                            while (remainingSpeed < 0.5) {
+                                audioFilter += "atempo=0.5,"
+                                remainingSpeed /= 0.5f
+                            }
+                            audioFilter += "atempo=$remainingSpeed"
+
                             listOf(
                                 "-i", v["input"] ?: error("input required"),
                                 "-filter_complex",
-                                "[0:v]setpts=$pts*PTS[v];[0:a]atempo=$audioSpeed[a]",
+                                "[0:v]setpts=$pts*PTS[v];[0:a]$audioFilter[a]",
                                 "-map", "[v]", "-map", "[a]",
                                 "-y", v["output"]?.ifBlank { null } ?: "output_speed.mp4",
                             )

@@ -91,10 +91,10 @@
     <string name="param_start_time">Start Time (HH:MM:SS)</string>
     <string name="param_end_time">End Time (HH:MM:SS)</string>
     <string name="param_duration">Duration (HH:MM:SS)</string>
-    <string name="param_crf">CRF Quality (%1$d)</string>
+    <string name="param_crf">CRF Quality</string>
     <string name="param_bitrate">Bitrate (kbps)</string>
     <string name="param_fps">Frame Rate (fps)</string>
-    <string name="param_speed">Speed Factor (%1$.1fx)</string>
+    <string name="param_speed">Speed Factor</string>
     <string name="param_rotation">Rotation</string>
     <string name="param_segment_duration">Segment Duration (s)</string>
     <string name="param_watermark_position">Watermark Position</string>
@@ -118,7 +118,8 @@
     <string name="progress_completed">Completed</string>
     <string name="progress_failed">Failed</string>
     <string name="progress_cancelled">Cancelled</string>
-    <string name="progress_speed">Speed: %1$s</string>
+    <string name="progress_speed_label">Speed</string>
+    <string name="progress_speed">%1$s</string>
     <string name="progress_time">Time: %1$s</string>
     <string name="progress_size">Size: %1$s</string>
     <string name="progress_log_title">Log</string>

@@ -1,11 +1,8 @@
-package com.convex.app.data.ffmpeg
+package com.arthenica.ffmpegkit
 
 import android.content.Context
 import android.net.Uri
-import com.arthenica.ffmpegkit.FFmpegKit
-import com.arthenica.ffmpegkit.FFmpegKitConfig
-import com.arthenica.ffmpegkit.FFmpegSession
-import com.arthenica.ffmpegkit.ReturnCode
+import com.convex.app.data.ffmpeg.FfmpegRepository
 import com.convex.app.domain.model.ExecutionState
 import io.mockk.every
 import io.mockk.mockk
@@ -17,10 +14,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.junit.After
+import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import java.io.File
 
@@ -28,12 +26,36 @@ class FfmpegRepositoryTest {
 
     private val context = mockk<Context>(relaxed = true)
     private lateinit var repository: FfmpegRepository
+    private val argsSlot = slot<Array<String>>()
+
+    companion object {
+        @JvmStatic
+        @BeforeClass
+        fun setUpClass() {
+            mockkStatic(FFmpegKit::class)
+            mockkStatic(FFmpegKitConfig::class)
+            mockkStatic(Uri::class)
+            mockkStatic(android.util.Log::class)
+            mockkStatic(NativeLoader::class)
+            
+            every { android.util.Log.d(any<String>(), any<String>()) } returns 0
+            every { android.util.Log.i(any<String>(), any<String>()) } returns 0
+            every { android.util.Log.w(any<String>(), any<String>()) } returns 0
+            every { android.util.Log.e(any<String>(), any<String>()) } returns 0
+            every { FFmpegKit.cancel(any<Long>()) } returns Unit
+            every { NativeLoader.loadFFmpegKitAbiDetect() } returns Unit
+            every { NativeLoader.loadFFmpeg() } returns true
+        }
+
+        @JvmStatic
+        @AfterClass
+        fun tearDownClass() {
+            unmockkAll()
+        }
+    }
 
     @Before
     fun setup() {
-        mockkStatic(FFmpegKit::class)
-        mockkStatic(FFmpegKitConfig::class)
-        mockkStatic(Uri::class)
         repository = FfmpegRepository(context)
         
         // Mock Uri.parse
@@ -41,19 +63,28 @@ class FfmpegRepositoryTest {
             val uri = mockk<Uri>()
             every { uri.toString() } returns firstArg()
             every { uri.path } returns firstArg<String>().substringAfter("file://")
+            every { uri.equals(any<Any>()) } answers { firstArg<Any>() === uri }
             uri
         }
-    }
 
-    @After
-    fun tearDown() {
-        unmockkAll()
+        // Default stub for executeWithArgumentsAsync to prevent hanging and capture argsSlot
+        every {
+            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any(), any(), any())
+        } answers {
+            val session = mockk<FFmpegSession>(relaxed = true)
+            every { session.sessionId } returns 123L
+            every { session.returnCode } returns ReturnCode(0)
+            
+            val callback = secondArg<FFmpegSessionCompleteCallback>()
+            callback.apply(session)
+            session
+        }
     }
 
     @Test
     fun `execute emits Completed when FFmpeg succeeds`() = runBlocking {
         val session = mockk<FFmpegSession>()
-        val completeCallbackSlot = slot<(FFmpegSession) -> Unit>()
+        val completeCallbackSlot = slot<FFmpegSessionCompleteCallback>()
         
         every { session.sessionId } returns 123L
         every { session.returnCode } returns ReturnCode(0)
@@ -68,7 +99,7 @@ class FfmpegRepositoryTest {
         // We simulate it here
         val job = launch {
             delay(10)
-            completeCallbackSlot.captured(session)
+            completeCallbackSlot.captured.apply(session)
         }
 
         val results = flow.toList()
@@ -81,7 +112,7 @@ class FfmpegRepositoryTest {
     @Test
     fun `execute emits Failed when FFmpeg returns error code`() = runBlocking {
         val session = mockk<FFmpegSession>()
-        val completeCallbackSlot = slot<(FFmpegSession) -> Unit>()
+        val completeCallbackSlot = slot<FFmpegSessionCompleteCallback>()
         
         every { session.sessionId } returns 123L
         every { session.returnCode } returns ReturnCode(1)
@@ -94,7 +125,7 @@ class FfmpegRepositoryTest {
         
         val job = launch {
             delay(10)
-            completeCallbackSlot.captured(session)
+            completeCallbackSlot.captured.apply(session)
         }
 
         val results = flow.toList()
@@ -109,11 +140,6 @@ class FfmpegRepositoryTest {
         // We can't directly test private mapArguments, but we can test it via execute
         // by checking what is passed to FFmpegKit.executeWithArgumentsAsync
         
-        val argsSlot = slot<Array<String>>()
-        every {
-            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any(), any(), any())
-        } returns mockk(relaxed = true)
-
         every { FFmpegKitConfig.getSafParameterForRead(any(), any()) } returns "/saf/read/path"
         every { FFmpegKitConfig.getSafParameterForWrite(any(), any()) } returns "/saf/write/path"
 
@@ -128,14 +154,9 @@ class FfmpegRepositoryTest {
 
     @Test
     fun `mapArguments handles relative cache paths`() {
-        val argsSlot = slot<Array<String>>()
         val cacheDir = File("/tmp/cache")
         every { context.cacheDir } returns cacheDir
         
-        every {
-            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any(), any(), any())
-        } returns mockk(relaxed = true)
-
         runBlocking {
             repository.execute(listOf("-i", "input.mp4", "temp.mp4")).first()
         }

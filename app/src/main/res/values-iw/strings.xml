@@ -89,10 +89,10 @@
     <string name="param_start_time">זמן התחלה (HH:MM:SS)</string>
     <string name="param_end_time">זמן סיום (HH:MM:SS)</string>
     <string name="param_duration">משך זמן (HH:MM:SS)</string>
-    <string name="param_crf">איכות CRF (%1$d)</string>
+    <string name="param_crf">איכות CRF</string>
     <string name="param_bitrate">קצב סיביות (kbps)</string>
     <string name="param_fps">קצב פריימים (fps)</string>
-    <string name="param_speed">מקדם מהירות (%1$.1fx)</string>
+    <string name="param_speed">מקדם מהירות</string>
     <string name="param_rotation">סיבוב</string>
     <string name="param_segment_duration">משך קטע (שניות)</string>
     <string name="param_watermark_position">מיקום סימן המים</string>
@@ -116,7 +116,8 @@
     <string name="progress_completed">הושלם</string>
     <string name="progress_failed">נכשל</string>
     <string name="progress_cancelled">בוטל</string>
-    <string name="progress_speed">מהירות: %1$s</string>
+    <string name="progress_speed_label">מהירות</string>
+    <string name="progress_speed">%1$s</string>
     <string name="progress_time">זמן: %1$s</string>
     <string name="progress_size">גודל: %1$s</string>
     <string name="progress_log_title">יומן</string>

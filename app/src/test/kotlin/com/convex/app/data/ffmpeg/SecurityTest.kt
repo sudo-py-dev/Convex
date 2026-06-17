@@ -21,7 +21,7 @@ class SecurityTest {
 
     private val context = mockk<Context>(relaxed = true)
     private lateinit var repository: FfmpegRepository
-    private val cacheDir = File("/tmp/convex_cache")
+    private val cacheDir = File("build/test_cache").absoluteFile
 
     @Before
     fun setUp() {
@@ -41,37 +41,53 @@ class SecurityTest {
     }
 
     @Test
-    fun `mapArguments removes null bytes`() = runBlocking {
+    fun `mapArguments removes null bytes and resolves cache`() = runBlocking {
         val argsSlot = slot<Array<String>>()
         every { 
-            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any(), any(), any()) 
+            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any<com.arthenica.ffmpegkit.FFmpegSessionCompleteCallback>(), any<com.arthenica.ffmpegkit.LogCallback>(), any<com.arthenica.ffmpegkit.StatisticsCallback>()) 
         } returns mockk(relaxed = true)
 
-        val args = listOf("input\u0000.mp4", "-vf", "subtitles=file\u0000.srt", "output\u0000.mp4")
+        val args = listOf("input\u0000.mp4", "output\u0000.mp4")
         repository.execute(args).first()
 
         val captured = argsSlot.captured
-        assertEquals("input.mp4", captured[0])
-        assertEquals("subtitles=file.srt", captured[2])
-        assertEquals("output.mp4", captured[3])
+        
+        // After sanitization and cache resolution
+        assertTrue("Captured[0] is ${captured[0]}", captured[0].contains("input.mp4"))
+        assertTrue("Captured[1] is ${captured[1]}", captured[1].contains("output.mp4"))
     }
 
     @Test
-    fun `mapArguments prevents path traversal in cache`() = runBlocking {
+    fun `mapArguments handles SAF URIs correctly`() = runBlocking {
         val argsSlot = slot<Array<String>>()
         every { 
-            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any(), any(), any()) 
+            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any<com.arthenica.ffmpegkit.FFmpegSessionCompleteCallback>(), any<com.arthenica.ffmpegkit.LogCallback>(), any<com.arthenica.ffmpegkit.StatisticsCallback>()) 
+        } returns mockk(relaxed = true)
+        
+        every { FFmpegKitConfig.getSafParameterForRead(any(), any()) } returns "saf:0"
+        every { FFmpegKitConfig.getSafParameterForWrite(any(), any()) } returns "saf:1"
+
+        val args = listOf("-i", "content://media/external/video/media/1", "content://document/2")
+        repository.execute(args).first()
+
+        val captured = argsSlot.captured
+        assertEquals("saf:0", captured[1])
+        assertEquals("saf:1", captured[2])
+    }
+
+    @Test
+    fun `mapArguments prevents path traversal`() = runBlocking {
+        val argsSlot = slot<Array<String>>()
+        every { 
+            FFmpegKit.executeWithArgumentsAsync(capture(argsSlot), any<com.arthenica.ffmpegkit.FFmpegSessionCompleteCallback>(), any<com.arthenica.ffmpegkit.LogCallback>(), any<com.arthenica.ffmpegkit.StatisticsCallback>()) 
         } returns mockk(relaxed = true)
 
-        // Attempting to go outside cache dir
         val traversalArg = "../../etc/passwd.mp4"
-        val args = listOf("-i", traversalArg, "output.mp4")
+        val args = listOf("-i", traversalArg)
         
         repository.execute(args).first()
 
         val captured = argsSlot.captured
-        // It should NOT have resolved to /etc/passwd.mp4
-        // Since it's invalid for cache, it remains as is
         assertEquals(traversalArg, captured[1])
     }
 

@@ -7,9 +7,12 @@ import android.webkit.MimeTypeMap
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -106,40 +109,63 @@ private fun ColumnScope.runningContent(
     technicalMode: Boolean,
     onCancel: () -> Unit,
 ) {
-    Text(
-        stringResource(R.string.progress_running),
-        style = MaterialTheme.typography.titleMedium,
-    )
-
-    if (state.progress >= 0) {
-        LinearProgressIndicator(
-            progress = { state.progress },
-            modifier = Modifier.fillMaxWidth(),
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            stringResource(R.string.progress_running),
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.primary
         )
-    } else {
-        LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
-    }
 
-    if (technicalMode) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            if (state.speed.isNotBlank()) {
-                statChip(Icons.Outlined.Speed, state.speed)
-            }
-            if (state.elapsed.isNotBlank()) {
-                statChip(Icons.Outlined.Timer, state.elapsed)
-            }
-            if (state.outputSize.isNotBlank()) {
-                statChip(Icons.Outlined.DataObject, state.outputSize)
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+            if (state.progress >= 0) {
+                LinearProgressIndicator(
+                    progress = { state.progress },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(12.dp),
+                    strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+                )
+            } else {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(12.dp),
+                    strokeCap = androidx.compose.ui.graphics.StrokeCap.Round,
+                )
             }
         }
 
+        if (state.progress >= 0) {
+            Text(
+                text = "${(state.progress * 100).toInt()}%",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+
+    Spacer(Modifier.height(8.dp))
+
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        statItem(Icons.Outlined.Timer, stringResource(R.string.media_info_duration), state.elapsed)
+        if (state.speed.isNotBlank()) {
+            statItem(Icons.Outlined.Speed, stringResource(R.string.progress_speed_label), state.speed)
+        }
+    }
+
+    if (technicalMode) {
         Text(
             stringResource(R.string.progress_log_title),
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 8.dp)
         )
         Surface(
             modifier = Modifier
@@ -182,6 +208,30 @@ private fun ColumnScope.runningContent(
 }
 
 @Composable
+private fun RowScope.statItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    label: String,
+    value: String,
+) {
+    Surface(
+        modifier = Modifier.weight(1f),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+    ) {
+        Column(
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Icon(icon, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Text(value, style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurface)
+        }
+    }
+}
+
+@Composable
 private fun ColumnScope.completedContent(
     state: ExecutionState.Completed,
     onReset: () -> Unit,
@@ -191,48 +241,66 @@ private fun ColumnScope.completedContent(
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Spacer(Modifier.weight(1f))
-        Icon(
-            Icons.Outlined.CheckCircle,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(72.dp),
-        )
-        Spacer(Modifier.height(16.dp))
-        Text(
-            stringResource(R.string.progress_completed),
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        Spacer(Modifier.height(8.dp))
         
-        val displayPath = if (state.outputPath.startsWith("content://")) {
-            // Simplified for content URIs
-            state.outputPath.substringAfterLast("/")
-        } else {
-            state.outputPath.substringAfterLast("/")
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+            modifier = Modifier.size(120.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    Icons.Outlined.CheckCircle,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(80.dp),
+                )
+            }
+        }
+
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                stringResource(R.string.progress_completed),
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
+            
+            val displayPath = if (state.outputPath.startsWith("content://")) {
+                state.outputPath.substringAfterLast("/")
+            } else {
+                state.outputPath.substringAfterLast("/")
+            }
+            
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                modifier = Modifier.padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    text = displayPath,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    maxLines = 2,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
+                )
+            }
         }
         
-        Text(
-            stringResource(R.string.progress_completed_output, displayPath),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 24.dp),
-        )
-        
-        Spacer(Modifier.height(24.dp))
-        
         Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             OutlinedButton(
                 onClick = onOpen,
                 modifier = Modifier.weight(1f),
-                shape = MaterialTheme.shapes.large,
+                shape = MaterialTheme.shapes.extraLarge,
+                contentPadding = PaddingValues(16.dp)
             ) {
                 Icon(Icons.AutoMirrored.Outlined.OpenInNew, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
@@ -241,7 +309,8 @@ private fun ColumnScope.completedContent(
             OutlinedButton(
                 onClick = onShare,
                 modifier = Modifier.weight(1f),
-                shape = MaterialTheme.shapes.large,
+                shape = MaterialTheme.shapes.extraLarge,
+                contentPadding = PaddingValues(16.dp)
             ) {
                 Icon(Icons.Outlined.Share, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
@@ -250,12 +319,14 @@ private fun ColumnScope.completedContent(
         }
         
         Spacer(Modifier.weight(1f))
+        
         Button(
             onClick = onReset,
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.large,
+            shape = MaterialTheme.shapes.extraLarge,
+            contentPadding = PaddingValues(16.dp)
         ) {
-            Text(stringResource(R.string.btn_done))
+            Text(stringResource(R.string.btn_done), style = MaterialTheme.typography.titleMedium)
         }
     }
 }

@@ -23,13 +23,23 @@ class FfmpegRepository
         private fun mapArguments(args: List<String>): List<String> {
             val lastIndex = args.lastIndex
             return args.mapIndexed { index, arg ->
-                // Sanitize: remove null bytes which can cause truncation in native code
+                // 1. Sanitize: remove null bytes which can cause truncation in native code
                 var processedArg = arg.replace("\u0000", "")
+                val sanitizedArg = processedArg
                 
-                // Handle content:// URIs, including those embedded in filter strings
-                val contentUriRegex = Regex("content://[^'\"\\s,; ]+")
+                // 2. Handle content:// URIs, including those embedded in filter strings
+                // Greedy match until whitespace or quotes. Most SAF URIs are complex and can contain many characters.
+                val contentUriRegex = Regex("content://[^'\"\\s]+[\"']?")
                 processedArg = contentUriRegex.replace(processedArg) { match ->
-                    val uriStr = match.value
+                    val fullMatch = match.value
+                    // If matched string ends with a quote that was used to wrap it, don't include it in the URI parsing
+                    var uriStr = fullMatch
+                    var suffix = ""
+                    if (fullMatch.endsWith("'") || fullMatch.endsWith("\"")) {
+                        uriStr = fullMatch.substring(0, fullMatch.length - 1)
+                        suffix = fullMatch.last().toString()
+                    }
+                    
                     val replacement = runCatching {
                         val uri = android.net.Uri.parse(uriStr)
                         // If it's the last argument and not part of a filter, treat as write
@@ -42,29 +52,30 @@ class FfmpegRepository
 
                     // If the URI was wrapped in single quotes (likely in a filter),
                     // we must escape any single quotes in the replacement path.
-                    if (match.range.first > 0 && processedArg[match.range.first - 1] == '\'' &&
-                        match.range.last < processedArg.length - 1 && processedArg[match.range.last + 1] == '\'') {
+                    val result = if (match.range.first > 0 && arg[match.range.first - 1] == '\'' && suffix == "'") {
                         replacement.replace("'", "'\\''")
                     } else {
                         replacement
                     }
+                    result + suffix
                 }
 
-                // Handle file:// URIs
+                // 3. Handle file:// URIs
                 if (processedArg.contains("file://")) {
-                    val fileUriRegex = Regex("file://[^'\"\\s,; ]+")
+                    val fileUriRegex = Regex("file://[^'\"\\s,;]+")
                     processedArg = fileUriRegex.replace(processedArg) { match ->
                         android.net.Uri.parse(match.value).path ?: match.value
                     }
                 }
 
-                // Handle relative paths in cache - SECURE VERSION
-                // Ensure the path stays within the cache directory to prevent path traversal
-                if (processedArg == arg && !arg.startsWith("/") && !arg.startsWith("-") && 
-                    arg.contains(".") && arg.toDoubleOrNull() == null && !arg.contains("://")) {
+                // 4. Handle relative paths in cache
+                // Use sanitizedArg to check if it was originally a relative path candidate
+                if (processedArg == sanitizedArg && !processedArg.startsWith("/") && !processedArg.startsWith("-") && 
+                    !processedArg.contains("=") && processedArg.contains(".") && 
+                    processedArg.toDoubleOrNull() == null && !processedArg.contains("://")) {
                     runCatching {
                         val cacheDir = context.cacheDir.canonicalFile
-                        val targetFile = java.io.File(cacheDir, arg).canonicalFile
+                        val targetFile = java.io.File(cacheDir, processedArg).canonicalFile
                         if (targetFile.path.startsWith(cacheDir.path + java.io.File.separator)) {
                             targetFile.parentFile?.mkdirs()
                             processedArg = targetFile.absolutePath
@@ -197,7 +208,7 @@ class FfmpegRepository
 
                 MediaInfo(
                     path = filePath,
-                    duration = info.duration ?: "unknown",
+                    duration = info.duration ?: "0",
                     sizeBytes = info.size?.toLongOrNull() ?: 0L,
                     videoCodec = videoStream?.codec,
                     width = videoStream?.width?.toInt(),
